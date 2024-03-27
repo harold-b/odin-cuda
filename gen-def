@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -eo pipefail
+cd $( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+# cgen -Icuda-12.3 cuda-12.3/cuda.h cuda.json
+# cgen -Icuda-12.3 cuda-12.3/cuda_runtime_api.h cudart.json

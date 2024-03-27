@@ -1,0 +1,90 @@
+---
+
+Defs: cuda.json
+
+Mono  : { Emit: false }
+CSharp: { Emit: false }
+
+Cpp:
+  Emit: false
+  ExportInternals: true
+  DontWrapCFunctions: true
+  ExportForwardDeclarations: true
+  
+  ExportTypes:
+    - ^[Cc][Uu].+
+    - ^cl.+
+
+  ExportMethods:
+    - ^::[Cc][Uu].+
+
+  ExportVars:
+    - ^::[Cc][Uu].+
+
+  IgnoreTypes  : []
+  IgnoreMethods: []
+
+
+Odin:
+  Emit           : true
+  ExportPath     : .
+  BasePackageName: ''
+  SingleFile     : true
+  TargetPlatform : Any
+  ExportTypeMapDir: ./exports
+  NoObjectiveCHeader: true
+
+  BitSetMap:
+    - (Flags|Mask)$
+
+  # ResolvedTypedefs:
+  #   - '[su]?int.*'
+
+  Packages:
+    - Name  : cu
+      Export: cu
+      # DarwinLinkLibs: [system:ModelIO.framework]
+      LinuxLinkLibs: [system:cuda_driver]
+      WindowsLinkLibs: [system:cuda_driver.lib]
+      Filter: .*
+
+      # Imports: []
+      # TypeMap: {}
+
+
+  # Symbol Transformers
+  EnumTransforms:
+  - Type: .*
+    Transforms:
+      - Kind  : RemovePrefix
+        Source: CUDA_
+      - Kind  : RemovePrefix
+        Source: CU_
+      - Kind  : RemoveTypeWordsFromElements
+      - Kind  : RemovePartialTypeNamePrefix
+      - Kind  : RemoveUnderscorePrefix
+      - Kind  : UnderscoreNumbers
+
+  TypeTransforms:
+    - Type: ^(cu).+
+      Transforms:
+      - Kind  : RemoveSuffix
+        Source: _v2
+    - Type: ^CU.+
+      Transforms:
+      - Kind  : RemovePrefix
+        Source: CUDA_
+      - Kind  : RemovePrefix
+        Source: CU
+
+  ProcTransforms:
+    - Type: ^(cu).+
+      Transforms:
+        - Kind  : RemovePrefix
+          Source: $group0
+
+  # VarTransforms:
+  #   - Type: ^(cu).+
+  #     Transforms:
+  #       - Kind  : RemovePrefix
+  #         Source: $group0
