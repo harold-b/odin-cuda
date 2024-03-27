@@ -16,6 +16,8 @@ when ODIN_OS == .Windows {
 }
 
 
+dim3 :: distinct [3]u32
+
 
 foreign lib {
 }

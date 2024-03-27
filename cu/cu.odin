@@ -6,12 +6,12 @@ import cffi "core:c"
 
 when ODIN_OS == .Linux {
     foreign import lib {
-        "system:cuda_driver",
+        "system:cuda",
     }
 }
 when ODIN_OS == .Windows {
     foreign import lib {
-        "system:cuda_driver.lib",
+        "system:cuda.lib",
     }
 }
 
@@ -135,11 +135,11 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuCtxDestroy_v2")
-    CtxDestroy_v2 :: proc(ctx: context) -> result ---
+    CtxDestroy_v2 :: proc(ctx: context_t) -> result ---
 
     @(require_results)
     @(link_name="cuCtxPushCurrent_v2")
-    CtxPushCurrent_v2 :: proc(ctx: context) -> result ---
+    CtxPushCurrent_v2 :: proc(ctx: context_t) -> result ---
 
     @(require_results)
     @(link_name="cuCtxPopCurrent_v2")
@@ -147,7 +147,7 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuCtxSetCurrent")
-    CtxSetCurrent :: proc(ctx: context) -> result ---
+    CtxSetCurrent :: proc(ctx: context_t) -> result ---
 
     @(require_results)
     @(link_name="cuCtxGetCurrent")
@@ -167,7 +167,7 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuCtxGetId")
-    CtxGetId :: proc(ctx: context, ctxId: ^cffi.ulonglong) -> result ---
+    CtxGetId :: proc(ctx: context_t, ctxId: ^cffi.ulonglong) -> result ---
 
     @(require_results)
     @(link_name="cuCtxSynchronize")
@@ -199,7 +199,7 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuCtxGetApiVersion")
-    CtxGetApiVersion :: proc(ctx: context, version: ^cffi.uint) -> result ---
+    CtxGetApiVersion :: proc(ctx: context_t, version: ^cffi.uint) -> result ---
 
     @(require_results)
     @(link_name="cuCtxGetStreamPriorityRange")
@@ -219,7 +219,7 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuCtxDetach")
-    CtxDetach :: proc(ctx: context) -> result ---
+    CtxDetach :: proc(ctx: context_t) -> result ---
 
     @(require_results)
     @(link_name="cuModuleLoad")
@@ -419,7 +419,7 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuMemcpyPeer")
-    MemcpyPeer :: proc(dstDevice: deviceptr, dstContext: context, srcDevice: deviceptr, srcContext: context, ByteCount: cffi.uint) -> result ---
+    MemcpyPeer :: proc(dstDevice: deviceptr, dstContext: context_t, srcDevice: deviceptr, srcContext: context_t, ByteCount: cffi.uint) -> result ---
 
     @(require_results)
     @(link_name="cuMemcpyHtoD_v2")
@@ -475,7 +475,7 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuMemcpyPeerAsync")
-    MemcpyPeerAsync :: proc(dstDevice: deviceptr, dstContext: context, srcDevice: deviceptr, srcContext: context, ByteCount: cffi.uint, hStream: stream) -> result ---
+    MemcpyPeerAsync :: proc(dstDevice: deviceptr, dstContext: context_t, srcDevice: deviceptr, srcContext: context_t, ByteCount: cffi.uint, hStream: stream) -> result ---
 
     @(require_results)
     @(link_name="cuMemcpyHtoDAsync_v2")
@@ -1063,7 +1063,7 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuGraphAddMemcpyNode")
-    GraphAddMemcpyNode :: proc(phGraphNode: ^^graphNode_st, hGraph: graph, dependencies: ^^graphNode_st, numDependencies: cffi.uint, copyParams: ^MEMCPY3D_st, ctx: context) -> result ---
+    GraphAddMemcpyNode :: proc(phGraphNode: ^^graphNode_st, hGraph: graph, dependencies: ^^graphNode_st, numDependencies: cffi.uint, copyParams: ^MEMCPY3D_st, ctx: context_t) -> result ---
 
     @(require_results)
     @(link_name="cuGraphMemcpyNodeGetParams")
@@ -1075,7 +1075,7 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuGraphAddMemsetNode")
-    GraphAddMemsetNode :: proc(phGraphNode: ^^graphNode_st, hGraph: graph, dependencies: ^^graphNode_st, numDependencies: cffi.uint, memsetParams: ^MEMSET_NODE_PARAMS_st, ctx: context) -> result ---
+    GraphAddMemsetNode :: proc(phGraphNode: ^^graphNode_st, hGraph: graph, dependencies: ^^graphNode_st, numDependencies: cffi.uint, memsetParams: ^MEMSET_NODE_PARAMS_st, ctx: context_t) -> result ---
 
     @(require_results)
     @(link_name="cuGraphMemsetNodeGetParams")
@@ -1283,11 +1283,11 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuGraphExecMemcpyNodeSetParams")
-    GraphExecMemcpyNodeSetParams :: proc(hGraphExec: graphExec, hNode: graphNode, copyParams: ^MEMCPY3D_st, ctx: context) -> result ---
+    GraphExecMemcpyNodeSetParams :: proc(hGraphExec: graphExec, hNode: graphNode, copyParams: ^MEMCPY3D_st, ctx: context_t) -> result ---
 
     @(require_results)
     @(link_name="cuGraphExecMemsetNodeSetParams")
-    GraphExecMemsetNodeSetParams :: proc(hGraphExec: graphExec, hNode: graphNode, memsetParams: ^MEMSET_NODE_PARAMS_st, ctx: context) -> result ---
+    GraphExecMemsetNodeSetParams :: proc(hGraphExec: graphExec, hNode: graphNode, memsetParams: ^MEMSET_NODE_PARAMS_st, ctx: context_t) -> result ---
 
     @(require_results)
     @(link_name="cuGraphExecHostNodeSetParams")
@@ -1395,7 +1395,7 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuGraphConditionalHandleCreate")
-    GraphConditionalHandleCreate :: proc(pHandle_out: ^cffi.ulonglong, hGraph: graph, ctx: context, defaultLaunchValue: cffi.uint, flags: cffi.uint) -> result ---
+    GraphConditionalHandleCreate :: proc(pHandle_out: ^cffi.ulonglong, hGraph: graph, ctx: context_t, defaultLaunchValue: cffi.uint, flags: cffi.uint) -> result ---
 
     @(require_results)
     @(link_name="cuOccupancyMaxActiveBlocksPerMultiprocessor")
@@ -1591,11 +1591,11 @@ foreign lib {
 
     @(require_results)
     @(link_name="cuCtxEnablePeerAccess")
-    CtxEnablePeerAccess :: proc(peerContext: context, Flags: cffi.uint) -> result ---
+    CtxEnablePeerAccess :: proc(peerContext: context_t, Flags: cffi.uint) -> result ---
 
     @(require_results)
     @(link_name="cuCtxDisablePeerAccess")
-    CtxDisablePeerAccess :: proc(peerContext: context) -> result ---
+    CtxDisablePeerAccess :: proc(peerContext: context_t) -> result ---
 
     @(require_results)
     @(link_name="cuDeviceGetP2PAttribute")
@@ -1674,7 +1674,7 @@ device_v1 :: distinct cffi.int
 device :: distinct cffi.int
 
 /// CUcontext
-context :: distinct ^ctx_st
+context_t :: distinct ^ctx_st
 
 /// CUmodule
 module :: distinct ^mod_st

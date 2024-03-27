@@ -48,8 +48,11 @@ Odin:
       WindowsLinkLibs: [system:cudart_static.lib]
       Filter: .*
 
-      # Imports: []
-      # TypeMap: {}
+      Imports:
+        - |
+          dim3 :: distinct [3]u32
+      TypeMap:
+        dim3: dim3
 
 
   # Symbol Transformers
